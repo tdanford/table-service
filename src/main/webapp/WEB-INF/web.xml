@@ -54,7 +54,7 @@
 
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>us.countmein.metadata;org.codehaus.jackson.jaxrs;us.countmein.metadata.resources;us.countmein.metadata.resources.v2;us.countmein.metadata.domain</param-value>
+			<param-value>org.codehaus.jackson.jaxrs</param-value>
 		</init-param>
 		
 		<init-param>
