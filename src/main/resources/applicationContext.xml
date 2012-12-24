@@ -15,12 +15,14 @@
 		<property name="order" value="1" />
 		<property name="locations">
 			<list>
-				<value>file://${user.home}/tables.conf</value>
+				<value>file://${user.home}/table-service.conf</value>
 			</list>
 		</property>
 	</bean>
 
 	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
 
-	<context:component-scan base-package="org.tdanford.tableservice.resources" />
+	<bean id="tableSetResource" class="org.tdanford.tableservice.resources.TableSetResource">
+		<constructor-arg value="${tables.dir}"/>
+	</bean>
 </beans>

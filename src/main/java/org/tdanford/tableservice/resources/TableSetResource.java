@@ -23,8 +23,8 @@ public class TableSetResource {
 	private File dir;
 	private Map<String,Table> tables;
 	
-	public TableSetResource() throws IOException { 
-		this(new File("/Users/danfoti1/Data/UCSC/hg19"));
+	public TableSetResource(String path) throws IOException { 
+		this(new File(path));
 	}
 	
 	public TableSetResource(File dir) throws IOException { 
