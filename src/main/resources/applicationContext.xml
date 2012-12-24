@@ -22,5 +22,5 @@
 
 	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
 
-	<context:component-scan base-package="org.tdanford.resources" />
+	<context:component-scan base-package="org.tdanford.tableservice.resources" />
 </beans>
