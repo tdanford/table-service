@@ -138,6 +138,13 @@
 	</build>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.linuxense</groupId>
+			<artifactId>javadbf</artifactId>
+			<version>0.4.0</version>
+		</dependency>
+            
 		<!-- CORS -->
 		<dependency>
 			<groupId>com.thetransactioncompany</groupId>
