@@ -3,20 +3,20 @@ package org.tdanford.tableservice.domain;
 import java.util.*;
 import java.io.*;
 
-public class Table {
+public class TextFileTable {
 
 	private int width;
 	private ArrayList<String> header;
 	private Map<String,Integer> headerIndices;
 	private ArrayList<String[]> rows;
 
-	public Table(File f, String delims) throws IOException { 
+	public TextFileTable(File f, String delims) throws IOException { 
 		InputStream is = new FileInputStream(f);
 		parse(is, delims, "UTF-8");
 		is.close();
 	}
 
-	public Table(InputStream is, String delims) throws IOException { 
+	public TextFileTable(InputStream is, String delims) throws IOException { 
 		parse(is, delims, "UTF-8");
 	}
 

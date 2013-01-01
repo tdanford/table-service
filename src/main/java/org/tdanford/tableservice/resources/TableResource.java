@@ -21,13 +21,13 @@ import org.springframework.stereotype.Component;
 import org.tdanford.tableservice.domain.AndQuery;
 import org.tdanford.tableservice.domain.EqualsQuery;
 import org.tdanford.tableservice.domain.OrQuery;
-import org.tdanford.tableservice.domain.Table;
+import org.tdanford.tableservice.domain.TextFileTable;
 
 public class TableResource {
 
-	private Table table;
+	private TextFileTable table;
 
-	public TableResource(Table t) { 
+	public TableResource(TextFileTable t) { 
 		this.table = t;
 	}
 

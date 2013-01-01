@@ -10,7 +10,7 @@ import javax.ws.rs.PathParam;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-import org.tdanford.tableservice.domain.Table;
+import org.tdanford.tableservice.domain.TextFileTable;
 
 import com.sun.jersey.api.NotFoundException;
 
@@ -21,7 +21,7 @@ public class TableSetResource {
 	private Logger LOG = Logger.getLogger(TableSetResource.class);
 	
 	private File dir;
-	private Map<String,Table> tables;
+	private Map<String,TextFileTable> tables;
 	
 	public TableSetResource(String path) throws IOException { 
 		this(new File(path));
@@ -33,7 +33,7 @@ public class TableSetResource {
 			throw new IOException(String.format("%s is either not a directory, or is unreadable", 
 					dir.getAbsolutePath()));
 		}
-		tables = new TreeMap<String,Table>();
+		tables = new TreeMap<String,TextFileTable>();
 	}
 	
 	private void findTable(String tableId) throws IOException { 
@@ -41,7 +41,7 @@ public class TableSetResource {
 			File filename = new File(dir, String.format("%s.txt", tableId));
 			LOG.info(String.format("Looking for file %s", filename.getAbsolutePath()));
 			if(filename.exists() && !filename.isDirectory() && filename.canRead()) { 
-				Table t = new Table(filename, "\t");
+				TextFileTable t = new TextFileTable(filename, "\t");
 				tables.put(tableId, t);
 				LOG.info(String.format("Loaded file %s", filename.getAbsolutePath()));
 			} else { 
