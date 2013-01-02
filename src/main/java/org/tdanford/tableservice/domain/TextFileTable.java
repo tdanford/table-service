@@ -3,7 +3,7 @@ package org.tdanford.tableservice.domain;
 import java.util.*;
 import java.io.*;
 
-public class TextFileTable {
+public class TextFileTable implements Table {
 
 	private int width;
 	private ArrayList<String> header;
@@ -20,14 +20,34 @@ public class TextFileTable {
 		parse(is, delims, "UTF-8");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.tdanford.tableservice.domain.Table#getWidth()
+	 */
+	@Override
 	public int getWidth() { return width; }
 
+	/* (non-Javadoc)
+	 * @see org.tdanford.tableservice.domain.Table#getNumRows()
+	 */
+	@Override
 	public int getNumRows() { return rows.size(); }
 
+	/* (non-Javadoc)
+	 * @see org.tdanford.tableservice.domain.Table#getField(int)
+	 */
+	@Override
 	public String getField(int i) { return header.get(i); }
 
+	/* (non-Javadoc)
+	 * @see org.tdanford.tableservice.domain.Table#getRow(int)
+	 */
+	@Override
 	public String[] getRow(int j) { return rows.get(j); }
 
+	/* (non-Javadoc)
+	 * @see org.tdanford.tableservice.domain.Table#findHeader(java.lang.String)
+	 */
+	@Override
 	public Integer findHeader(String value) { 
 		if(headerIndices.containsKey(value)) {
 			return headerIndices.get(value);
@@ -36,10 +56,18 @@ public class TextFileTable {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.tdanford.tableservice.domain.Table#getHeaders()
+	 */
+	@Override
 	public String[] getHeaders() { 
 		return header != null ? header.toArray(new String[0]) : new String[0];
 	}
 
+	/* (non-Javadoc)
+	 * @see org.tdanford.tableservice.domain.Table#findRows(org.tdanford.tableservice.domain.Query)
+	 */
+	@Override
 	public SortedSet<Integer> findRows(Query q) { 
 		TreeSet<Integer> ris = new TreeSet<Integer>();
 		for(int j = 0; j < rows.size(); j++) { 
@@ -50,6 +78,10 @@ public class TextFileTable {
 		return ris;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.tdanford.tableservice.domain.Table#getFieldCounts(int)
+	 */
+	@Override
 	public LinkedHashMap<String,Integer> getFieldCounts(int i) { 
 		LinkedHashMap<String,Integer> counts = new LinkedHashMap<String,Integer>();
 
