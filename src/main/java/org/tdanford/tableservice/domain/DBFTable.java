@@ -11,11 +11,11 @@ import java.util.*;
 import com.linuxense.javadbf.DBFReader;
 
 /**
- * @author danfoti1
+ * @author Timothy Danford
  *
  */
 public class DBFTable implements Table {
-	
+
 	private static Map<String,DBFTypeConverter> typeConverters;
 	static { 
 		typeConverters = new TreeMap<String,DBFTypeConverter>();
@@ -25,52 +25,60 @@ public class DBFTable implements Table {
 		typeConverters.put("L", new DBFBooleanConverter());
 		typeConverters.put("D", new DBFDateConverter());
 	}
-	
+
 	private ArrayList<String> fields;
 	private Map<String,Integer> fieldIndices;
 	private ArrayList<String[]> rows;
-	
+
 	private DBFTable() { 
 		fields = new ArrayList<String>();
 		fieldIndices = new TreeMap<String,Integer>();
 		rows = new ArrayList<String[]>();
 	}
 	
-	public DBFTable(File dbfFile) throws IOException { 
+	public DBFTable(File file) throws IOException { 
 		this();
-		FileInputStream fis = new FileInputStream(dbfFile);
+		FileInputStream fis = new FileInputStream(file);
 		try { 
-			DBFReader reader = new DBFReader(fis);
-			ArrayList<DBFTypeConverter> fieldConverters = new ArrayList<DBFTypeConverter>();
-			
-			for(int i = 0; i < reader.getFieldCount(); i++) { 
-				String fieldName = reader.getField(i).getName();
-				fields.add(fieldName);
-				fieldIndices.put(fieldName, i);
-				String type = new String(new byte[] { reader.getField(i).getDataType() }, "UTF-8");
-				if(!typeConverters.containsKey(type)) { 
-					throw new IllegalArgumentException(String.format("Unknown type %s in field %d (%s)",
-							type, i, fieldName));
-				}
-				fieldConverters.add(typeConverters.get(type));
-			}
-			
-			for(int i = 0; i < reader.getRecordCount(); i++) { 
-				Object[] record = reader.nextRecord();
-				String[] row = new String[record.length];
-				for(int j = 0; j < record.length; j++) { 
-					if(record[j] == null) { 
-						row[j] = null;
-					} else { 
-						row[j] = fieldConverters.get(j).convert(record[j]);
-					}
-				}
-				
-				rows.add(row);
-			}
-			
+			parse(fis); 
 		} finally { 
 			fis.close();
+		}
+	}
+
+	public DBFTable(InputStream is) throws IOException { 
+		this();
+		parse(is);
+	}
+		
+	private void parse(InputStream is) throws IOException { 
+		DBFReader reader = new DBFReader(is);
+		ArrayList<DBFTypeConverter> fieldConverters = new ArrayList<DBFTypeConverter>();
+
+		for(int i = 0; i < reader.getFieldCount(); i++) { 
+			String fieldName = reader.getField(i).getName();
+			fields.add(fieldName);
+			fieldIndices.put(fieldName, i);
+			String type = new String(new byte[] { reader.getField(i).getDataType() }, "UTF-8");
+			if(!typeConverters.containsKey(type)) { 
+				throw new IllegalArgumentException(String.format("Unknown type %s in field %d (%s)",
+						type, i, fieldName));
+			}
+			fieldConverters.add(typeConverters.get(type));
+		}
+
+		for(int i = 0; i < reader.getRecordCount(); i++) { 
+			Object[] record = reader.nextRecord();
+			String[] row = new String[record.length];
+			for(int j = 0; j < record.length; j++) { 
+				if(record[j] == null) { 
+					row[j] = null;
+				} else { 
+					row[j] = fieldConverters.get(j).convert(record[j]);
+				}
+			}
+
+			rows.add(row);
 		}
 	}
 
@@ -180,7 +188,7 @@ class DBFBooleanConverter implements DBFTypeConverter {
 	}
 }
 class DBFDateConverter implements DBFTypeConverter { 
-	
+
 	private DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
 	public String convert(Object value) { 
