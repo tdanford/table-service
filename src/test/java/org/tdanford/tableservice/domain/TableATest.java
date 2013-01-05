@@ -6,6 +6,11 @@ import java.io.InputStream;
 import org.testng.annotations.*;
 import static org.testng.Assert.*;
 
+/**
+ * 
+ * @author Timothy Danford
+ *
+ */
 public class TableATest {
 	
 	private InputStream tableInput; 
